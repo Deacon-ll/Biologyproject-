@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecosystem Simulator & Ecological Interactions</title>
+    <title>Ecosystem Simulator - Health, Reproduction & Mortality</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome CDN -->
@@ -34,11 +34,11 @@
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="p-2 bg-emerald-600 rounded-lg text-white">
-                    <i class="fa-solid fa-skull-crossbones text-xl"></i>
+                    <i class="fa-solid fa-dna text-xl"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-wide text-white">EcoLab Simulator</h1>
-                    <p class="text-xs text-emerald-400">Ecological Interactions & Mortality Dynamics</p>
+                    <p class="text-xs text-emerald-400">Health, Natural Reproduction & Dynamic Mortality</p>
                 </div>
             </div>
 
@@ -102,8 +102,8 @@
 
             <!-- Simulation Banner -->
             <div class="bg-gray-900/60 border border-gray-800/80 rounded-xl p-4 text-xs text-gray-400 leading-relaxed">
-                <h3 id="info-title" class="text-sm font-semibold text-gray-200 mb-1">Predation & Mortality Dynamic</h3>
-                <p id="info-desc">Organisms consume energy to survive. High speed, movement against wind/water, and extreme temperatures accelerate energy decay, leading to starvation and death.</p>
+                <h3 id="info-title" class="text-sm font-semibold text-gray-200 mb-1">Health & Reproduction System</h3>
+                <p id="info-desc">Organisms maintain Health/HP. High health (≥ 85%) enables natural reproduction and offspring birth. When organisms die, they do NOT revive automatically.</p>
             </div>
         </div>
 
@@ -132,10 +132,10 @@
 
             <hr class="border-gray-800">
 
-            <!-- 2. Organisms Configuration Dynamic Area -->
+            <!-- 2. Organisms Configuration Area -->
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">
-                    <i class="fa-solid fa-dna text-emerald-400 me-1"></i> Species & Populations
+                    <i class="fa-solid fa-dna text-emerald-400 me-1"></i> Species & Initial Population
                 </h3>
                 <div id="organisms-control-container" class="space-y-4"></div>
             </div>
@@ -145,7 +145,7 @@
             <!-- 3. Abiotic Variables -->
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">
-                    <i class="fa-solid fa-temperature-quarter text-emerald-400 me-1"></i> Abiotic Hazards & Climate
+                    <i class="fa-solid fa-temperature-quarter text-emerald-400 me-1"></i> Abiotic Environmental Factors
                 </h3>
 
                 <!-- Temperature -->
@@ -207,47 +207,47 @@
         const canvas = document.getElementById('simCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Ecosystem Config State
+        // Ecosystem Configurations
         const simState = {
             predation: {
-                title: "Predation & Starvation Model",
-                desc: "Predators hunt preys, preys consume plants. Lack of food or extreme heat causes energy depletion and starvation deaths.",
+                title: "Predation, Health & Reproduction Model",
+                desc: "Organisms consume food to gain HP. When HP ≥ 85%, healthy organisms give birth. Dead organisms do NOT revive; population grows only through reproduction.",
                 organisms: [
-                    { id: 'plant', label: 'Plant/Producer', name: 'Grass', count: 40, max: 80, color: '#22c55e' },
-                    { id: 'prey', label: 'Prey/Herbivore', name: 'Rabbits', count: 25, max: 80, color: '#3b82f6' },
-                    { id: 'predator', label: 'Predator/Carnivore', name: 'Wolves', count: 8, max: 80, color: '#ef4444' }
+                    { id: 'plant', label: 'Plant/Producer', name: 'Grass', count: 35, max: 80, color: '#22c55e' },
+                    { id: 'prey', label: 'Prey/Herbivore', name: 'Rabbits', count: 20, max: 80, color: '#3b82f6' },
+                    { id: 'predator', label: 'Predator/Carnivore', name: 'Wolves', count: 6, max: 80, color: '#ef4444' }
                 ]
             },
             competition: {
-                title: "Interspecific Competition & Survival",
-                desc: "Two species compete for limited resource pods. Organisms that fail to forage die of starvation.",
+                title: "Interspecific Competition & Reproduction",
+                desc: "Two species compete for limited resource pods. Feeding builds HP for reproduction; starving leads to extinction unless offspring are birthed in time.",
                 organisms: [
-                    { id: 'specA', label: 'Species A', name: 'Red Squirrels', count: 20, max: 80, color: '#f97316' },
-                    { id: 'specB', label: 'Species B', name: 'Grey Squirrels', count: 20, max: 80, color: '#a855f7' }
+                    { id: 'specA', label: 'Species A', name: 'Red Squirrels', count: 18, max: 80, color: '#f97316' },
+                    { id: 'specB', label: 'Species B', name: 'Grey Squirrels', count: 18, max: 80, color: '#a855f7' }
                 ]
             },
             commensalism: {
-                title: "Commensalism Model",
-                desc: "Commensals hitch rides on hosts. If the host dies due to extreme climate stress, commensals detach.",
+                title: "Commensalism & Population Growth",
+                desc: "Commensals hitch rides on hosts. Healthy hosts reproduce. If a host dies, attached commensals detach and search for living hosts.",
                 organisms: [
                     { id: 'host', label: 'Host Organism', name: 'Whale', count: 6, max: 80, color: '#0ea5e9' },
-                    { id: 'commensal', label: 'Commensal Organism', name: 'Barnacles', count: 35, max: 80, color: '#eab308' }
+                    { id: 'commensal', label: 'Commensal Organism', name: 'Barnacles', count: 30, max: 80, color: '#eab308' }
                 ]
             },
             mutualism: {
-                title: "Mutualism Cooperative Model",
-                desc: "Two species mutually sustain each other's energy. Isolation and extreme abiotic stress cause die-offs.",
+                title: "Mutualism Mutual Health Boost",
+                desc: "Two species boost each other's health when close, allowing both to reproduce faster and thrive together.",
                 organisms: [
-                    { id: 'spec1', label: 'Mutualist Species 1', name: 'Honey Bees', count: 25, max: 80, color: '#eab308' },
-                    { id: 'spec2', label: 'Mutualist Species 2', name: 'Flowers', count: 25, max: 80, color: '#ec4899' }
+                    { id: 'spec1', label: 'Mutualist Species 1', name: 'Honey Bees', count: 20, max: 80, color: '#eab308' },
+                    { id: 'spec2', label: 'Mutualist Species 2', name: 'Flowers', count: 20, max: 80, color: '#ec4899' }
                 ]
             },
             parasitism: {
                 title: "Parasitism & Host Mortality Dynamic",
-                desc: "Parasites drain host vitality. Over-parasitization drains host energy to zero, causing host death and parasite detachment.",
+                desc: "Parasites drain host HP to reproduce. If a host's HP drops to 0, it dies permanently, leaving parasites hostless.",
                 organisms: [
-                    { id: 'host', label: 'Host Organism', name: 'Deer', count: 12, max: 80, color: '#10b981' },
-                    { id: 'parasite', label: 'Parasite Species', name: 'Ticks', count: 30, max: 80, color: '#dc2626' }
+                    { id: 'host', label: 'Host Organism', name: 'Deer', count: 10, max: 80, color: '#10b981' },
+                    { id: 'parasite', label: 'Parasite Species', name: 'Ticks', count: 25, max: 80, color: '#dc2626' }
                 ]
             }
         };
@@ -262,7 +262,7 @@
         };
 
         let entities = [];
-        let deathEffects = []; // Visual markers when organisms die
+        let floatEffects = []; // Visual markers for Deaths and Births
         let resources = [];
 
         const envThemes = {
@@ -280,14 +280,15 @@
         }
         window.addEventListener('resize', resizeCanvas);
 
-        // Death Visual Effect Class
-        class DeathEffect {
-            constructor(x, y, text) {
+        // Floating Event Notification Effect Class
+        class FloatEffect {
+            constructor(x, y, text, color) {
                 this.x = x;
                 this.y = y;
-                this.text = text || "☠️";
+                this.text = text;
+                this.color = color || '#ef4444';
                 this.opacity = 1.0;
-                this.vy = -0.5;
+                this.vy = -0.6;
             }
             update() {
                 this.y += this.vy;
@@ -296,7 +297,7 @@
             draw() {
                 ctx.save();
                 ctx.globalAlpha = Math.max(0, this.opacity);
-                ctx.fillStyle = '#ef4444';
+                ctx.fillStyle = this.color;
                 ctx.font = 'bold 11px sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText(this.text, this.x, this.y);
@@ -304,21 +305,22 @@
             }
         }
 
-        // Entity Class
+        // Organism Entity Class
         class Entity {
-            constructor(type, x, y, color, customName) {
+            constructor(type, x, y, color, customName, initialHealth = 60) {
                 this.type = type;
-                this.x = x || Math.random() * canvas.width;
-                this.y = y || Math.random() * canvas.height;
+                this.x = x || Math.random() * (canvas.width || 600);
+                this.y = y || Math.random() * (canvas.height || 400);
                 this.vx = (Math.random() - 0.5) * 2;
                 this.vy = (Math.random() - 0.5) * 2;
                 this.radius = this.getDefaultRadius();
                 this.color = color;
                 this.customName = customName;
-                this.maxEnergy = 100;
-                this.energy = 80 + Math.random() * 20; // Initial health
+                this.maxHealth = 100;
+                this.health = initialHealth;
                 this.attachedTo = null;
                 this.isDead = false;
+                this.reproCooldown = 180; // Frames before organism can reproduce again
             }
 
             getDefaultRadius() {
@@ -340,52 +342,60 @@
             update() {
                 if (this.isDead) return;
 
-                // --- 1. Energy & Death Decay Calculation ---
-                let energyDecay = 0.08; // Base metabolism cost per frame
-
-                // Abiotic Stress Factors
-                if (abiotic.temp > 38 || abiotic.temp < 8) {
-                    energyDecay += 0.12; // Thermal stress
+                if (this.reproCooldown > 0) {
+                    this.reproCooldown--;
                 }
-                energyDecay += (abiotic.wind / 50) * 0.04;
-                energyDecay += (abiotic.water / 50) * 0.04;
 
-                // Plant Photosynthesis (Plants replenish energy with light & humidity)
+                // --- 1. Health Decay & Metabolic Cost ---
+                let healthDecay = 0.08;
+
+                if (abiotic.temp > 38 || abiotic.temp < 8) {
+                    healthDecay += 0.12; // Thermal stress
+                }
+                healthDecay += (abiotic.wind / 50) * 0.03;
+                healthDecay += (abiotic.water / 50) * 0.03;
+
+                // Plants & Flowers Photosynthesis
                 if (this.type === 'plant' || this.type === 'spec2') {
-                    const photosyn = (abiotic.light / 100) * (abiotic.humidity / 100) * 0.25;
-                    this.energy += photosyn - 0.06;
+                    const photosyn = (abiotic.light / 100) * (abiotic.humidity / 100) * 0.3;
+                    this.health += photosyn - 0.06;
                     if (abiotic.light < 15 || abiotic.humidity < 15) {
-                        this.energy -= 0.15; // Wither from lack of sunlight/water
+                        this.health -= 0.15; // Wither from low light/humidity
                     }
                 } else {
-                    this.energy -= energyDecay;
+                    this.health -= healthDecay;
                 }
 
-                // Check Death Condition
-                if (this.energy <= 0) {
+                // Death check
+                if (this.health <= 0) {
                     this.triggerDeath("-Starved");
                     return;
                 }
 
-                // Cap Max Energy
-                if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
+                // Cap maximum health
+                if (this.health > this.maxHealth) this.health = this.maxHealth;
 
-                // --- 2. Physics & Movement ---
+                // --- 2. Check Reproduction Condition ---
+                if (this.health >= 85 && this.reproCooldown <= 0) {
+                    this.reproduce();
+                }
+
+                // --- 3. Movement Physics ---
                 const speedMult = 0.5 + (abiotic.temp / 25) * 0.8;
                 const windEffectX = (abiotic.wind / 50) * 0.25;
                 const waterEffectY = (abiotic.water / 50) * 0.25;
 
                 if (this.type === 'plant' || this.type === 'spec2') {
-                    this.x += Math.sin(Date.now() * 0.002 + this.y) * 0.2;
+                    this.x += Math.sin(Date.now() * 0.002 + this.y) * 0.15;
                     return;
                 }
 
                 if (this.attachedTo) {
                     if (this.attachedTo.isDead) {
-                        this.attachedTo = null; // Host died, detach!
+                        this.attachedTo = null; // Detach if host dies
                     } else {
-                        this.x = this.attachedTo.x + Math.cos(this.energy) * (this.attachedTo.radius + 2);
-                        this.y = this.attachedTo.y + Math.sin(this.energy) * (this.attachedTo.radius + 2);
+                        this.x = this.attachedTo.x + Math.cos(this.health) * (this.attachedTo.radius + 2);
+                        this.y = this.attachedTo.y + Math.sin(this.health) * (this.attachedTo.radius + 2);
                         return;
                     }
                 }
@@ -402,7 +412,7 @@
                 this.vx += (Math.random() - 0.5) * 0.2;
                 this.vy += (Math.random() - 0.5) * 0.2;
 
-                const maxVel = 2.5;
+                const maxVel = 2.2;
                 const speed = Math.hypot(this.vx, this.vy);
                 if (speed > maxVel) {
                     this.vx = (this.vx / speed) * maxVel;
@@ -410,9 +420,34 @@
                 }
             }
 
+            reproduce() {
+                // Check species pop cap (max 80)
+                const sameTypeCount = entities.filter(e => e.type === this.type && !e.isDead).length;
+                if (sameTypeCount >= 80) return;
+
+                // Parent loses HP to create child
+                this.health -= 40;
+                this.reproCooldown = 240; // Cooldown for parent
+
+                // Spawn Offspring nearby
+                const offsetX = (Math.random() - 0.5) * 30;
+                const offsetY = (Math.random() - 0.5) * 30;
+                const childX = Math.max(10, Math.min(canvas.width - 10, this.x + offsetX));
+                const childY = Math.max(10, Math.min(canvas.height - 10, this.y + offsetY));
+
+                const child = new Entity(this.type, childX, childY, this.color, this.customName, 40);
+                child.reproCooldown = 200;
+                entities.push(child);
+
+                const birthMsg = (this.type === 'plant' || this.type === 'spec2') ? "🌱 Sprouted!" : "✨ Born!";
+                floatEffects.push(new FloatEffect(this.x, this.y, birthMsg, '#4ade80'));
+
+                syncPopulationToUI();
+            }
+
             triggerDeath(reason) {
                 this.isDead = true;
-                deathEffects.push(new DeathEffect(this.x, this.y, `☠️ ${reason}`));
+                floatEffects.push(new FloatEffect(this.x, this.y, `☠️ ${reason}`, '#ef4444'));
             }
 
             draw() {
@@ -430,16 +465,16 @@
                 ctx.stroke();
                 ctx.restore();
 
-                // Health / Energy Indicator Bar
+                // Health Bar
                 const barWidth = 18;
                 const barHeight = 3;
-                const healthRatio = Math.max(0, this.energy / this.maxEnergy);
+                const hpRatio = Math.max(0, this.health / this.maxHealth);
                 ctx.fillStyle = '#374151';
                 ctx.fillRect(this.x - barWidth / 2, this.y - this.radius - 10, barWidth, barHeight);
-                ctx.fillStyle = healthRatio > 0.5 ? '#22c55e' : (healthRatio > 0.25 ? '#eab308' : '#ef4444');
-                ctx.fillRect(this.x - barWidth / 2, this.y - this.radius - 10, barWidth * healthRatio, barHeight);
+                ctx.fillStyle = hpRatio > 0.5 ? '#22c55e' : (hpRatio > 0.25 ? '#eab308' : '#ef4444');
+                ctx.fillRect(this.x - barWidth / 2, this.y - this.radius - 10, barWidth * hpRatio, barHeight);
 
-                // Name Tag overhead
+                // Overhead Name
                 ctx.fillStyle = '#f3f4f6';
                 ctx.font = '9px sans-serif';
                 ctx.textAlign = 'center';
@@ -447,7 +482,7 @@
             }
         }
 
-        // Controllers & Tabs
+        // Controllers & Navigation UI
         function switchTab(tabKey) {
             activeTab = tabKey;
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -527,7 +562,7 @@
             const currentList = entities.filter(e => e.type === type && !e.isDead);
             if (currentList.length < targetCount) {
                 for (let i = currentList.length; i < targetCount; i++) {
-                    entities.push(new Entity(type, null, null, color, customName));
+                    entities.push(new Entity(type, null, null, color, customName, 80));
                 }
             } else if (currentList.length > targetCount) {
                 let removeAmount = currentList.length - targetCount;
@@ -563,12 +598,12 @@
         function resetSimulation() {
             entities = [];
             resources = [];
-            deathEffects = [];
+            floatEffects = [];
 
             const currentConfig = simState[activeTab];
             currentConfig.organisms.forEach(org => {
                 for (let i = 0; i < org.count; i++) {
-                    entities.push(new Entity(org.id, null, null, org.color, org.name));
+                    entities.push(new Entity(org.id, null, null, org.color, org.name, 70));
                 }
             });
 
@@ -610,30 +645,32 @@
             }
         }
 
-        // Interaction Logic Per Mode
+        // Ecological Interactions
         function handleInteractions() {
             if (activeTab === 'predation') {
                 const plants = entities.filter(e => e.type === 'plant' && !e.isDead);
                 const preys = entities.filter(e => e.type === 'prey' && !e.isDead);
                 const predators = entities.filter(e => e.type === 'predator' && !e.isDead);
 
+                // Preys eating Plants (Plants lose HP and die permanently without immediate respawn)
                 preys.forEach(prey => {
                     plants.forEach(plant => {
                         const dist = Math.hypot(prey.x - plant.x, prey.y - plant.y);
                         if (dist < prey.radius + plant.radius) {
-                            prey.energy = Math.min(prey.maxEnergy, prey.energy + 20);
-                            plant.energy -= 35; // Plant is consumed
-                            if (plant.energy <= 0) plant.triggerDeath("-Eaten");
+                            prey.health = Math.min(prey.maxHealth, prey.health + 25);
+                            plant.health -= 35; 
+                            if (plant.health <= 0) plant.triggerDeath("-Eaten");
                         }
                     });
                 });
 
+                // Predators hunting Preys
                 predators.forEach(pred => {
                     preys.forEach(prey => {
                         const dist = Math.hypot(pred.x - prey.x, pred.y - prey.y);
                         if (dist < pred.radius + prey.radius) {
-                            pred.energy = Math.min(pred.maxEnergy, pred.energy + 45);
-                            prey.triggerDeath("-Eaten"); // Prey dies instantly
+                            pred.health = Math.min(pred.maxHealth, pred.health + 45);
+                            prey.triggerDeath("-Eaten"); // Prey dies permanently
                         }
                     });
                 });
@@ -647,7 +684,7 @@
                     resources.forEach((res, rIdx) => {
                         const dist = Math.hypot(org.x - res.x, org.y - res.y);
                         if (dist < org.radius + res.radius) {
-                            org.energy = Math.min(org.maxEnergy, org.energy + res.energy);
+                            org.health = Math.min(org.maxHealth, org.health + res.energy);
                             resources.splice(rIdx, 1);
                         }
                     });
@@ -661,8 +698,8 @@
                     spec2List.forEach(s2 => {
                         const dist = Math.hypot(s1.x - s2.x, s1.y - s2.y);
                         if (dist < s1.radius + s2.radius + 12) {
-                            s1.energy = Math.min(s1.maxEnergy, s1.energy + 0.3);
-                            s2.energy = Math.min(s2.maxEnergy, s2.energy + 0.3);
+                            s1.health = Math.min(s1.maxHealth, s1.health + 0.35);
+                            s2.health = Math.min(s2.maxHealth, s2.health + 0.35);
 
                             ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
                             ctx.lineWidth = 1;
@@ -687,10 +724,10 @@
                             }
                         });
                     } else {
-                        // Parasite drains host energy!
-                        parasite.energy = Math.min(parasite.maxEnergy, parasite.energy + 0.1);
-                        parasite.attachedTo.energy -= 0.15;
-                        if (parasite.attachedTo.energy <= 0) {
+                        // Parasite drains host health
+                        parasite.health = Math.min(parasite.maxHealth, parasite.health + 0.15);
+                        parasite.attachedTo.health -= 0.18;
+                        if (parasite.attachedTo.health <= 0) {
                             parasite.attachedTo.triggerDeath("-Drained");
                             parasite.attachedTo = null;
                         }
@@ -731,26 +768,30 @@
                 handleInteractions();
             }
 
-            // Filter out dead entities & synchronize UI
-            let hadDeaths = false;
+            // Update & Render Entities (Remove Dead Permanently)
+            let populationChanged = false;
             for (let i = entities.length - 1; i >= 0; i--) {
                 const entity = entities[i];
                 if (!isPaused) entity.update();
                 
                 if (entity.isDead) {
                     entities.splice(i, 1);
-                    hadDeaths = true;
+                    populationChanged = true;
                 } else {
                     entity.draw();
                 }
             }
 
-            // Render Death Visual Effects
-            for (let i = deathEffects.length - 1; i >= 0; i--) {
-                const fx = deathEffects[i];
+            if (populationChanged) {
+                syncPopulationToUI();
+            }
+
+            // Render Floating Text Effects
+            for (let i = floatEffects.length - 1; i >= 0; i--) {
+                const fx = floatEffects[i];
                 if (!isPaused) fx.update();
                 fx.draw();
-                if (fx.opacity <= 0) deathEffects.splice(i, 1);
+                if (fx.opacity <= 0) floatEffects.splice(i, 1);
             }
         }
 
