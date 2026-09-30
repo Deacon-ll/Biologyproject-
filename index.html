@@ -749,6 +749,18 @@
                 syncPopulationToUI();
             }
 
+            def handle_reproduction(organisms):
+    new_borns = []
+    # Only let living, healthy organisms create new ones
+    for organism in organisms:
+        if organism.energy > 80: # Reproduction threshold
+            organism.energy -= 40 # Energy cost
+            new_borns.append(Organism()) # A legitimate birth
+            
+    # Add newborns to the population naturally
+    organisms.extend(new_borns)
+
+
             // Render Death Visual Effects
             for (let i = deathEffects.length - 1; i >= 0; i--) {
                 const fx = deathEffects[i];
